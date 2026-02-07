@@ -1,0 +1,15 @@
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+DerivedData/
+build/
+*.ipa
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+**/xcuserdata/
+project.xcworkspace/xcuserdata/
