@@ -86,12 +86,23 @@ struct MortgageLoanCalculatorView: View {
         HStack {
             Text(title)
             Spacer()
-            TextField("0", value: value, format: .number)
+            // to have empty input field
+            TextField("", text: Binding(
+                get: { value.wrappedValue == 0 ? "" : "\(value.wrappedValue)" },
+                set: { value.wrappedValue = Double($0) ?? 0 }
+            ))
                 .multilineTextAlignment(.trailing)
                 .keyboardType(.decimalPad)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled(true)
                 .frame(width: 140)
+                .padding(8)
+                .background(Color(.systemGray6))
+                .cornerRadius(6)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 6)
+                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                )
         }
     }
 
@@ -99,12 +110,23 @@ struct MortgageLoanCalculatorView: View {
         HStack {
             Text(title)
             Spacer()
-            TextField("0", value: value, format: .number)
+            // to have empty input field
+            TextField("", text: Binding(
+                get: { value.wrappedValue == 0 ? "" : "\(value.wrappedValue)" },
+                set: { value.wrappedValue = Double($0) ?? 0 }
+            ))
                 .multilineTextAlignment(.trailing)
                 .keyboardType(.decimalPad)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled(true)
                 .frame(width: 140)
+                .padding(8)
+                .background(Color(.systemGray6))
+                .cornerRadius(6)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 6)
+                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                )
         }
     }
 
