@@ -10,49 +10,67 @@ struct SignInView: View {
                 brandColor
                     .ignoresSafeArea()
                 
-                VStack(spacing: 32) {
+                VStack(spacing: 0) {
                     
                     Spacer()
                     
-                    // title
-                    Text("MyMoney")
-                        .font(.system(size: 40, weight: .bold))
-                        .foregroundStyle(.white)
-                    
-                    // card container
+                    // logo/title
                     VStack(spacing: 16) {
+                        Image("Logo")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 100, height: 100)
                         
-                        NavigationLink {
-                            Text("Coming Soon")
-                        } label: {
-                            primaryButton("Sign In")
-                        }
+                        Text("MyMoney")
+                            .font(.system(size: 40, weight: .bold))
+                            .foregroundStyle(.white)
                         
-                        NavigationLink {
-                            Text("Coming Soon")
-                        } label: {
-                            secondaryButton("Sign Up")
-                        }
-                        
-                        Divider()
-                            .padding(.vertical, 8)
-                        
+                        Text("Manage your finances with ease")
+                            .font(.subheadline)
+                            .foregroundStyle(.white.opacity(0.9))
+                    }
+                    
+                    Spacer()
+                    
+                    // bottom section
+                    VStack(spacing: 16) {
                         NavigationLink {
                             HomeView()
                         } label: {
                             Text("Continue as Guest")
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
+                                .font(.subheadline)
+                                .foregroundStyle(.white.opacity(0.9))
+                        }
+                        
+                        // buttons at bottom
+                        HStack(spacing: 12) {
+                            NavigationLink {
+                                Text("Coming Soon")
+                            } label: {
+                                Text("Sign In")
+                                    .fontWeight(.semibold)
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(.white)
+                                    .foregroundStyle(brandColor)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                            }
+                            
+                            NavigationLink {
+                                Text("Coming Soon")
+                            } label: {
+                                Text("Sign Up")
+                                    .fontWeight(.semibold)
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color.orange)
+                                    .foregroundStyle(.white)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                            }
                         }
                     }
                     .padding(24)
-                    .background(.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .shadow(radius: 10)
-                    .padding(.horizontal, 28)
-                    
-                    Spacer()
-                    Spacer()
+                    .padding(.bottom, 8)
                 }
             }
         }
