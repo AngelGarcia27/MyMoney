@@ -110,7 +110,8 @@ struct HomeView: View {
                                 HomeCardButton(
                                     title: "Auto Loan Calculator",
                                     subtitle: "Calculate monthly payments and total interest",
-                                    systemImage: "car"
+                                    systemImage: "car",
+                                    color: .blue
                                 )
                             }
                             .buttonStyle(.plain)
@@ -121,7 +122,8 @@ struct HomeView: View {
                                 HomeCardButton(
                                     title: "Mortgage Calculator",
                                     subtitle: "Plan your home loan and amortization",
-                                    systemImage: "house"
+                                    systemImage: "house",
+                                    color: .green
                                 )
                             }
                             .buttonStyle(.plain)
@@ -132,7 +134,8 @@ struct HomeView: View {
                                 HomeCardButton(
                                     title: "Saving Planner",
                                     subtitle: "Set goals and track your savings growth",
-                                    systemImage: "banknote"
+                                    systemImage: "banknote",
+                                    color: .orange
                                 )
                             }
                             .buttonStyle(.plain)
@@ -142,8 +145,9 @@ struct HomeView: View {
                             } label: {
                                 HomeCardButton(
                                     title: "Education",
-                                    subtitle: "Coming Soon",
-                                    systemImage: "book.fill"
+                                    subtitle: "Learn financial basics",
+                                    systemImage: "book.fill",
+                                    color: .purple
                                 )
                             }
                             .buttonStyle(.plain)
@@ -153,8 +157,15 @@ struct HomeView: View {
                     Spacer(minLength: 24)
                 }
             }
-            .navigationTitle("MyMoney")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Image("Logo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 32)
+                }
+            }
             .onAppear {
                 Task {
                     await marketData.fetchRates()
