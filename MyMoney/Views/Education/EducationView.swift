@@ -5,12 +5,17 @@ struct EducationView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
-                    EducationCard(
-                        icon: "chart.pie.fill",
-                        title: "Budgeting Basics",
-                        description: "Learn the 50/30/20 rule: 50% needs, 30% wants, 20% savings",
-                        color: .blue
-                    )
+                    NavigationLink {
+                        BudgetingBasicsView()
+                    } label: {
+                        EducationCard(
+                            icon: "chart.pie.fill",
+                            title: "Budgeting Basics",
+                            description: "Learn the 50/30/20 rule: 50% needs, 30% wants, 20% savings",
+                            color: .blue
+                        )
+                    }
+                    .buttonStyle(.plain)
                     
                     EducationCard(
                         icon: "banknote.fill",
