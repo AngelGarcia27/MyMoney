@@ -4,13 +4,15 @@ struct HomeCardButton: View {
     let title: String
     let subtitle: String
     let systemImage: String
+    let color: Color
     
     var body: some View {
             HStack(spacing: 14) {
                 Image(systemName: systemImage)
                     .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(color)
                     .frame(width: 44, height: 44)
-                    .background(Color.black.opacity(0.06))
+                    .background(color.opacity(0.15))
                     .clipShape(Circle())
 
                 VStack(alignment: .leading, spacing: 4) {
