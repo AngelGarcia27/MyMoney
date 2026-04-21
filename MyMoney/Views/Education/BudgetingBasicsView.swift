@@ -104,6 +104,39 @@ struct BudgetingBasicsView: View {
                         .transition(.opacity.combined(with: .move(edge: .top)))
                     }
                 }
+                
+                // Quiz section
+                VStack(spacing: 16) {
+                    Text("Test Your Knowledge")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                    
+                    Text("Take a quick quiz to see how well you understand the 50/30/20 rule")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                    
+                    NavigationLink {
+                        QuizView(
+                            title: "Budgeting Quiz",
+                            questions: budgetingQuizQuestions
+                        )
+                    } label: {
+                        HStack {
+                            Image(systemName: "questionmark.circle.fill")
+                            Text("Take Quiz")
+                                .fontWeight(.semibold)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundStyle(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                    }
+                }
+                .padding()
+                .background(Color.blue.opacity(0.05))
+                .clipShape(RoundedRectangle(cornerRadius: 16))
             }
             .padding()
         }
@@ -117,6 +150,41 @@ struct BudgetingBasicsView: View {
                 }
             }
         }
+    }
+    
+    private var budgetingQuizQuestions: [QuizQuestion] {
+        [
+            QuizQuestion(
+                question: "What percentage of your income should go to needs in the 50/30/20 rule?",
+                options: ["30%", "50%", "20%", "40%"],
+                correctAnswer: 1,
+                explanation: "The 50/30/20 rule suggests allocating 50% of your income to needs like rent, utilities, groceries, and insurance."
+            ),
+            QuizQuestion(
+                question: "Which of these is considered a 'want' rather than a 'need'?",
+                options: ["Rent payment", "Streaming subscriptions", "Groceries", "Health insurance"],
+                correctAnswer: 1,
+                explanation: "Streaming subscriptions are wants - things you enjoy but don't need to survive. Needs are essential expenses like housing, food, and insurance."
+            ),
+            QuizQuestion(
+                question: "What should you do with the 20% savings portion?",
+                options: ["Spend it on wants", "Save for emergencies and retirement", "Use it for needs", "Give it away"],
+                correctAnswer: 1,
+                explanation: "The 20% should go toward savings, emergency funds, debt repayment, and retirement accounts to build your financial future."
+            ),
+            QuizQuestion(
+                question: "If you earn $3,000 per month, how much should go to wants?",
+                options: ["$600", "$900", "$1,500", "$1,000"],
+                correctAnswer: 1,
+                explanation: "30% of $3,000 is $900. This is your budget for dining out, entertainment, hobbies, and other non-essential expenses."
+            ),
+            QuizQuestion(
+                question: "What's the first step if you can't meet the 50/30/20 rule?",
+                options: ["Give up on budgeting", "Reduce wants and increase needs", "Reduce needs and wants where possible", "Ignore the rule completely"],
+                correctAnswer: 2,
+                explanation: "If 50% doesn't cover your needs, look for ways to reduce both needs (cheaper housing, meal planning) and wants to make room for savings."
+            )
+        ]
     }
 }
 
