@@ -3,6 +3,8 @@ import SwiftUI
 struct AutoLoanCalculatorView: View {
     @ObservedObject var model: AutoLoanModel
     @State private var showPaymentBreakdown: Bool = false
+    @State private var showingExportSheet = false
+    @State private var pdfData: Data?
 
     private let termOptions: [Int] = [24, 36, 48, 60, 72, 84]
 
@@ -85,8 +87,33 @@ struct AutoLoanCalculatorView: View {
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }
+            
+            if model.loanAmount > 0 {
+                Button {
+                    pdfData = PDFExportService.generateAutoLoanPDF(model: model)
+                    showingExportSheet = true
+                } label: {
+                    HStack {
+                        Image(systemName: "square.and.arrow.up")
+                        Text("Export Summary")
+                    }
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .fill(Color.blue)
+                    )
+                }
+            }
         }
         .padding(.top, 8)
+        .sheet(isPresented: $showingExportSheet) {
+            if let data = pdfData {
+                ShareSheet(items: [data])
+            }
+        }
     }
 
     private func moneyField(title: String, value: Binding<Double>) -> some View {
