@@ -2,6 +2,8 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject private var marketData = MarketDataViewModel()
+    @ObservedObject private var authService = AuthService.shared
+    @State private var showSignOutAlert = false
     
     private var greeting: String {
         let hour = Calendar.current.component(.hour, from: Date())
@@ -23,6 +25,9 @@ struct HomeView: View {
                     }
                     .padding(.horizontal)
                     .padding(.top)
+                    
+                    BudgetCircleView()
+                        .padding(.horizontal)
                     
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Market Overview")
@@ -165,6 +170,25 @@ struct HomeView: View {
                         .scaledToFit()
                         .frame(height: 32)
                 }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showSignOutAlert = true
+                    } label: {
+                        Image(systemName: "rectangle.portrait.and.arrow.right")
+                            .foregroundStyle(.red)
+                    }
+                }
+            }
+            .alert("Sign Out", isPresented: $showSignOutAlert) {
+                Button("Cancel", role: .cancel) { }
+                Button("Sign Out", role: .destructive) {
+                    Task {
+                        try? await authService.signOut()
+                    }
+                }
+            } message: {
+                Text("Are you sure you want to sign out?")
             }
             .onAppear {
                 Task {
