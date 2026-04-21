@@ -13,3 +13,7 @@ build/
 *.xcscmblueprint
 **/xcuserdata/
 project.xcworkspace/xcuserdata/
+
+# Config credentials (for production, use environment variables)
+MyMoney/Config/SupabaseConfig.swift
+MyMoney/Config/ClaudeConfig.swift
