@@ -3,6 +3,8 @@ import SwiftUI
 struct MortgageLoanCalculatorView: View {
     @ObservedObject var model: MortgageLoanModel
     @State private var showPaymentBreakdown: Bool = false
+    @State private var showingExportSheet = false
+    @State private var pdfData: Data?
 
     private let termOptions: [Int] = [15, 20, 30, 50]
 
@@ -78,8 +80,33 @@ struct MortgageLoanCalculatorView: View {
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }
+            
+            if model.loanAmount > 0 {
+                Button {
+                    pdfData = PDFExportService.generateMortgagePDF(model: model)
+                    showingExportSheet = true
+                } label: {
+                    HStack {
+                        Image(systemName: "square.and.arrow.up")
+                        Text("Export Summary")
+                    }
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .fill(Color.green)
+                    )
+                }
+            }
         }
         .padding(.top, 8)
+        .sheet(isPresented: $showingExportSheet) {
+            if let data = pdfData {
+                ShareSheet(items: [data])
+            }
+        }
     }
 
     private func moneyField(title: String, value: Binding<Double>) -> some View {
