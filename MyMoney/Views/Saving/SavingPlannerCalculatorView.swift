@@ -3,6 +3,8 @@ import SwiftUI
 struct SavingsCalculatorView: View {
     @ObservedObject var model: SavingPlannerModel
     @State private var startDate: Date = .now
+    @State private var showingExportSheet = false
+    @State private var pdfData: Data?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -55,9 +57,34 @@ struct SavingsCalculatorView: View {
 
             
             footerHint
+            
+            if model.goal > 0 {
+                Button {
+                    pdfData = PDFExportService.generateSavingsPDF(model: model)
+                    showingExportSheet = true
+                } label: {
+                    HStack {
+                        Image(systemName: "square.and.arrow.up")
+                        Text("Export Summary")
+                    }
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .fill(Color.orange)
+                    )
+                }
+            }
 
         }
         .padding(.top, 8)
+        .sheet(isPresented: $showingExportSheet) {
+            if let data = pdfData {
+                ShareSheet(items: [data])
+            }
+        }
     }
 
     private var footerHint: some View {
