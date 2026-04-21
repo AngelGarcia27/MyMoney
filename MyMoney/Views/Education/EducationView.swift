@@ -17,26 +17,53 @@ struct EducationView: View {
                     }
                     .buttonStyle(.plain)
                     
-                    EducationCard(
-                        icon: "banknote.fill",
-                        title: "Emergency Fund",
-                        description: "Save 3-6 months of expenses for unexpected situations",
-                        color: .green
-                    )
+                    NavigationLink {
+                        EmergencyFundView()
+                    } label: {
+                        EducationCard(
+                            icon: "banknote.fill",
+                            title: "Emergency Fund",
+                            description: "Save 3-6 months of expenses for unexpected situations",
+                            color: .green
+                        )
+                    }
+                    .buttonStyle(.plain)
                     
-                    EducationCard(
-                        icon: "chart.line.uptrend.xyaxis",
-                        title: "Start Investing",
-                        description: "Begin with index funds and diversify your portfolio",
-                        color: .purple
-                    )
+                    NavigationLink {
+                        StartInvestingView()
+                    } label: {
+                        EducationCard(
+                            icon: "chart.line.uptrend.xyaxis",
+                            title: "Start Investing",
+                            description: "Begin with index funds and diversify your portfolio",
+                            color: .purple
+                        )
+                    }
+                    .buttonStyle(.plain)
                     
-                    EducationCard(
-                        icon: "creditcard.fill",
-                        title: "Manage Debt",
-                        description: "Pay off high-interest debt first, then build savings",
-                        color: .orange
-                    )
+                    NavigationLink {
+                        ManageDebtView()
+                    } label: {
+                        EducationCard(
+                            icon: "creditcard.fill",
+                            title: "Manage Debt",
+                            description: "Pay off high-interest debt first, then build savings",
+                            color: .orange
+                        )
+                    }
+                    .buttonStyle(.plain)
+                    
+                    NavigationLink {
+                        FinancialAdvisorView()
+                    } label: {
+                        EducationCard(
+                            icon: "bubble.left.and.bubble.right.fill",
+                            title: "Ask AI Advisor",
+                            description: "Get answers to your financial questions",
+                            color: .teal
+                        )
+                    }
+                    .buttonStyle(.plain)
                 }
                 .padding()
             }
