@@ -1,0 +1,9 @@
+import Foundation
+
+// TEMPLATE FILE - Copy this to SupabaseConfig.swift and add your credentials
+// DO NOT commit SupabaseConfig.swift to version control
+
+enum SupabaseConfig {
+    static let url = "YOUR_SUPABASE_PROJECT_URL"
+    static let anonKey = "YOUR_SUPABASE_ANON_KEY"
+}

@@ -2,6 +2,9 @@ import SwiftUI
 
 struct SignInView: View {
     let brandColor = Color(red: 0/255, green: 109/255, blue: 91/255)
+    @State private var showSignIn = false
+    @State private var showSignUp = false
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -34,18 +37,10 @@ struct SignInView: View {
                     
                     // bottom section
                     VStack(spacing: 16) {
-                        NavigationLink {
-                            HomeView()
-                        } label: {
-                            Text("Continue as Guest")
-                                .font(.subheadline)
-                                .foregroundStyle(.white.opacity(0.9))
-                        }
-                        
                         // buttons at bottom
                         HStack(spacing: 12) {
-                            NavigationLink {
-                                Text("Coming Soon")
+                            Button {
+                                showSignIn = true
                             } label: {
                                 Text("Sign In")
                                     .fontWeight(.semibold)
@@ -56,8 +51,8 @@ struct SignInView: View {
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                             }
                             
-                            NavigationLink {
-                                Text("Coming Soon")
+                            Button {
+                                showSignUp = true
                             } label: {
                                 Text("Sign Up")
                                     .fontWeight(.semibold)
@@ -72,6 +67,16 @@ struct SignInView: View {
                     .padding(24)
                     .padding(.bottom, 8)
                 }
+            }
+            .sheet(isPresented: $showSignIn) {
+                SignInFormView()
+                    .presentationDetents([.large])
+                    .presentationDragIndicator(.visible)
+            }
+            .sheet(isPresented: $showSignUp) {
+                SignUpView()
+                    .presentationDetents([.large])
+                    .presentationDragIndicator(.visible)
             }
         }
     }
