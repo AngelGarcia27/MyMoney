@@ -2,6 +2,7 @@ import SwiftUI
 import Charts
 
 struct BudgetCircleView: View {
+    @StateObject private var budgetService = BudgetService.shared
     @State private var monthlyIncome: String = ""
     @State private var showingAddExpense = false
     @State private var expenses: [BudgetExpense] = []
@@ -11,6 +12,7 @@ struct BudgetCircleView: View {
     @State private var showingExportSheet = false
     @State private var pdfData: Data?
     @State private var showingBudgetChat = false
+    @State private var hasLoadedData = false
     
     private var incomeValue: Double {
         Double(monthlyIncome) ?? 0
@@ -96,6 +98,19 @@ struct BudgetCircleView: View {
             )
             .presentationDetents([.large])
         }
+        .task {
+            if !hasLoadedData {
+                await loadBudgetData()
+                hasLoadedData = true
+            }
+        }
+        .onChange(of: monthlyIncome) { _, newValue in
+            if let income = Double(newValue), income > 0, hasLoadedData {
+                Task {
+                    await budgetService.saveBudget(monthlyIncome: income)
+                }
+            }
+        }
     }
     
     @ViewBuilder
@@ -155,6 +170,14 @@ struct BudgetCircleView: View {
                 .keyboardType(.decimalPad)
                 .textFieldStyle(.plain)
                 .font(.title3.weight(.semibold))
+                .toolbar {
+                    ToolbarItemGroup(placement: .keyboard) {
+                        Spacer()
+                        Button("Done") {
+                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                        }
+                    }
+                }
             
             if !monthlyIncome.isEmpty {
                 Text("/ month")
@@ -284,9 +307,7 @@ struct BudgetCircleView: View {
                 .font(.subheadline.weight(.medium))
             
             Button {
-                if let index = expenses.firstIndex(where: { $0.id == expense.id }) {
-                    expenses.remove(at: index)
-                }
+                deleteExpense(expense)
             } label: {
                 Image(systemName: "xmark.circle.fill")
                     .foregroundStyle(.red.opacity(0.7))
@@ -343,16 +364,51 @@ struct BudgetCircleView: View {
     
     private func addExpense() {
         guard let amount = Double(newExpenseAmount), !newExpenseName.isEmpty else { return }
-        let expense = BudgetExpense(name: newExpenseName, amount: amount, category: selectedCategory)
+        
+        let name = newExpenseName
+        let category = selectedCategory
+        
+        let expense = BudgetExpense(name: name, amount: amount, category: category)
         expenses.append(expense)
+        
+        Task {
+            await budgetService.addExpense(name: name, amount: amount, category: category.rawValue)
+        }
+        
         newExpenseName = ""
         newExpenseAmount = ""
         selectedCategory = .other
         showingAddExpense = false
     }
     
-    private func deleteExpense(at offsets: IndexSet) {
-        expenses.remove(atOffsets: offsets)
+    private func deleteExpense(_ expense: BudgetExpense) {
+        if let index = expenses.firstIndex(where: { $0.id == expense.id }) {
+            expenses.remove(at: index)
+        }
+        
+        if let matchingExpense = budgetService.expenses.first(where: { $0.name == expense.name && $0.amount == expense.amount }) {
+            Task {
+                await budgetService.deleteExpense(matchingExpense)
+            }
+        }
+    }
+    
+    private func loadBudgetData() async {
+        await budgetService.loadBudget()
+        
+        if let budget = budgetService.currentBudget {
+            monthlyIncome = budget.monthlyIncome > 0 ? String(format: "%.0f", budget.monthlyIncome) : ""
+        }
+        
+        print("Loaded expenses: \(budgetService.expenses)")
+        
+        expenses = budgetService.expenses.map { data in
+            BudgetExpense(
+                name: data.name,
+                amount: data.amount,
+                category: ExpenseCategory(rawValue: data.category) ?? .other
+            )
+        }
     }
 }
 
