@@ -63,6 +63,14 @@ struct SignInView: View {
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                             }
                         }
+                        
+                        Button {
+                            AuthService.shared.continueAsGuest()
+                        } label: {
+                            Text("Continue as Guest")
+                                .fontWeight(.medium)
+                                .foregroundStyle(.white.opacity(0.9))
+                        }
                     }
                     .padding(24)
                     .padding(.bottom, 8)
