@@ -6,6 +6,7 @@ class AuthService: ObservableObject {
     static let shared = AuthService()
     
     @Published var isAuthenticated = false
+    @Published var isGuest = false
     @Published var currentUser: User?
     @Published var isLoading = false
     
@@ -85,5 +86,10 @@ class AuthService: ObservableObject {
     
     func resetPassword(email: String) async throws {
         try await supabase.auth.resetPasswordForEmail(email)
+    }
+    
+    func continueAsGuest() {
+        isGuest = true
+        isAuthenticated = true
     }
 }
